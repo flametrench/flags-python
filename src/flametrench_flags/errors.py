@@ -1,13 +1,14 @@
 # Copyright 2026 NDC Digital, LLC
 # SPDX-License-Identifier: Apache-2.0
 
-"""FlagStore error taxonomy (cross-cutting, ADR 0021 §Constraints).
+"""FlagStore error taxonomy (cross-cutting, ADR 0019 / ADR 0021 §Constraints).
 
 Uniform taxonomy shared with audit, identity, and tenancy:
 - ``InvalidFormatError`` — shape/value violation; carries a ``field``
   discriminator naming the offending input.
 - ``NotFoundError`` — flag does not exist or is outside the caller's scope.
-- ``ConflictError`` — uniqueness violation (duplicate ``key`` within ``scope``).
+- ``PreconditionError`` — state/constraint violation (duplicate ``key`` within
+  ``scope``); uses the house-uniform ADR 0019 error class, matching PHP/Java/Node.
 """
 
 from __future__ import annotations
@@ -37,5 +38,8 @@ class NotFoundError(FlagError):
     """Raised when a flag does not exist or is outside the caller's scope."""
 
 
-class ConflictError(FlagError):
-    """Raised when ``key`` already exists within ``scope``."""
+class PreconditionError(FlagError):
+    """Raised when a state or constraint precondition is violated.
+
+    Used for duplicate ``(scope, key)`` on create (ADR 0019 taxonomy).
+    """

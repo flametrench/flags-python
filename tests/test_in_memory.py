@@ -11,11 +11,11 @@ import pytest
 from flametrench_ids import generate
 
 from flametrench_flags import (
-    ConflictError,
     Flag,
     InMemoryFlagStore,
     InvalidFormatError,
     NotFoundError,
+    PreconditionError,
     bucket,
 )
 
@@ -117,10 +117,10 @@ class TestCreate:
         ids = {_create_minimal(store, key=f"flag-{i}").id for i in range(5)}
         assert len(ids) == 5
 
-    def test_duplicate_key_in_scope_raises_conflict(self):
+    def test_duplicate_key_in_scope_raises_precondition(self):
         store = _store()
         _create_minimal(store, key="dup-key")
-        with pytest.raises(ConflictError):
+        with pytest.raises(PreconditionError):
             _create_minimal(store, key="dup-key")
 
     def test_same_key_different_scope_ok(self):

@@ -11,19 +11,19 @@ SHA-256-based percentage bucketing pinned for cross-SDK identity.
 """
 
 from .bucket import bucket
-from .errors import ConflictError, FlagError, InvalidFormatError, NotFoundError
+from .errors import FlagError, InvalidFormatError, NotFoundError, PreconditionError
 from .in_memory import InMemoryFlagStore
 from .types import AuthzRule, Flag, PercentageRule, Rule
 
 __all__ = [
     "AuthzRule",
-    "ConflictError",
     "Flag",
     "FlagError",
     "InMemoryFlagStore",
     "InvalidFormatError",
     "NotFoundError",
     "PercentageRule",
+    "PreconditionError",
     "Rule",
     "bucket",
 ]

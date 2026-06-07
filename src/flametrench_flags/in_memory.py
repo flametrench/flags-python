@@ -13,7 +13,7 @@ from typing import Any, Callable
 from flametrench_ids import generate
 
 from .bucket import bucket
-from .errors import ConflictError, InvalidFormatError, NotFoundError
+from .errors import InvalidFormatError, NotFoundError, PreconditionError
 from .types import AuthzRule, Flag, PercentageRule, Rule
 
 _KEY_RE = re.compile(r"^[a-z0-9._-]{1,128}$")
@@ -96,7 +96,7 @@ class InMemoryFlagStore:
     ) -> Flag:
         parsed_rules, _ = _validate_and_parse(scope, key, rules or [])
         if (scope, key) in self._by_scope_key:
-            raise ConflictError(f"Flag key {key!r} already exists in scope {scope!r}")
+            raise PreconditionError(f"Flag key {key!r} already exists in scope {scope!r}")
         now = datetime.now(timezone.utc)
         flag_id = generate("flag")
         flag = Flag(
